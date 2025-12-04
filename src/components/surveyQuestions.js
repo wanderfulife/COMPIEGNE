@@ -34,6 +34,7 @@ export const templateSurveyQuestions = [
         id: "Q2A_MONTANTS",
         text: "De quelle rue de Compiègne venez-vous ?",
         type: 'street',
+        streetDataFile: 'streets.json', // Which JSON file to load for street autocomplete
         next: "Q3_MONTANTS"
     },
 
@@ -42,6 +43,7 @@ export const templateSurveyQuestions = [
         id: "Q2B_MONTANTS",
         text: "De quelle rue de Margny-les-Compiègne venez-vous ?",
         type: 'street',
+        streetDataFile: 'streetsmargny.json', // Which JSON file to load for street autocomplete
         next: "Q3_MONTANTS"
     },
 
@@ -455,6 +457,7 @@ export const templateSurveyQuestions = [
         id: "Q3A_NON_VOYAGEURS",
         text: "De quelle rue de Compiègne venez-vous ?",
         type: 'street',
+        streetDataFile: 'streets.json', // Which JSON file to load for street autocomplete
         next: "Q4_NON_VOYAGEURS"
     },
 
@@ -463,6 +466,7 @@ export const templateSurveyQuestions = [
         id: "Q3B_NON_VOYAGEURS",
         text: "De quelle rue de Margny-les-Compiègne venez-vous ?",
         type: 'street',
+        streetDataFile: 'streetsmargny.json', // Which JSON file to load for street autocomplete
         next: "Q4_NON_VOYAGEURS"
     },
 

@@ -301,11 +301,7 @@ const props = defineProps({
     type: String,
     required: true,
   },
-  stationsList: { 
-    type: Array,
-    default: () => []
-  },
-  streetsList: { 
+  stationsList: {
     type: Array,
     default: () => []
   },
@@ -355,6 +351,7 @@ const stationInput = ref("");
 const streetInput = ref("");
 const filteredStations = ref([]);
 const filteredStreets = ref([]);
+const currentStreetsList = ref([]); // Dynamically loaded street list based on current question
 
 // State for Gare selection (using GareSelector component now)
 const selectedGareName = ref("");
@@ -1030,6 +1027,25 @@ watch(streetInput, () => {
   filterStreets();
 });
 
+// Watch for street-type questions and load the appropriate JSON file
+watch(currentQuestion, async (newQuestion) => {
+  if (newQuestion && newQuestion.type === 'street' && newQuestion.streetDataFile) {
+    try {
+      const response = await fetch(`/${newQuestion.streetDataFile}`);
+      if (response.ok) {
+        currentStreetsList.value = await response.json();
+        console.log(`Loaded ${newQuestion.streetDataFile}:`, currentStreetsList.value.length, 'streets');
+      } else {
+        console.error(`Error loading ${newQuestion.streetDataFile}: Response not OK`, response.status);
+        currentStreetsList.value = [];
+      }
+    } catch (error) {
+      console.error(`Error fetching ${newQuestion.streetDataFile}:`, error);
+      currentStreetsList.value = [];
+    }
+  }
+}, { immediate: true });
+
 const filterStations = () => {
   if (!stationInput.value) {
     filteredStations.value = [];
@@ -1052,8 +1068,8 @@ const filterStreets = () => {
     return;
   }
   const inputLower = streetInput.value.toLowerCase();
-  filteredStreets.value = Array.isArray(props.streetsList)
-    ? props.streetsList.filter(street => street.toLowerCase().includes(inputLower))
+  filteredStreets.value = Array.isArray(currentStreetsList.value)
+    ? currentStreetsList.value.filter(street => street.toLowerCase().includes(inputLower))
     : [];
 };
 
